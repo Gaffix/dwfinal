@@ -1,10 +1,9 @@
-// script.js
-
 // Função executada ao carregar a página
 function onLoaderFunc() {
   document.querySelectorAll(".seats").forEach((seat) => {
     seat.checked = false; // Garante que todos os assentos comecem desmarcados
   });
+  document.getElementById("notification").textContent = "";
 }
 
 // Armazena os dados inseridos pelo usuário
@@ -20,7 +19,7 @@ function takeData() {
   document.getElementById("notification").textContent = `Selecione ${numSeats} assento(s).`;
 }
 
-// Atualiza o texto com as informações selecionadas pelo usuário
+// Atualiza o texto com as informações selecionadas pelo usuário e salva na tabela
 function updateTextArea() {
   const name = document.getElementById("Username").value;
   const numSeats = parseInt(document.getElementById("Numseats").value, 10);
@@ -38,9 +37,15 @@ function updateTextArea() {
     return;
   }
 
-  document.getElementById("nameDisplay").value = name;
-  document.getElementById("NumberDisplay").value = numSeats;
-  document.getElementById("seatsDisplay").value = selectedSeats.join(", ");
+  // Adiciona os dados na tabela
+  const table = document.getElementById("data-table");
+  const row = table.insertRow();
+  row.insertCell(0).textContent = name;
+  row.insertCell(1).textContent = numSeats;
+  row.insertCell(2).textContent = selectedSeats.join(", ");
+
+  // Reseta o formulário
+  resetForm();
 }
 
 // Previne a seleção de mais assentos que o número permitido
@@ -56,3 +61,13 @@ seats.forEach((seat) => {
     }
   });
 });
+
+// Função para resetar o formulário
+function resetForm() {
+  document.getElementById("Username").value = "";
+  document.getElementById("Numseats").value = "";
+  document.querySelectorAll(".seats").forEach((seat) => {
+    seat.checked = false;
+  });
+  document.getElementById("notification").textContent = "";
+}
